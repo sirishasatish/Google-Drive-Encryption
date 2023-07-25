@@ -1,0 +1,107 @@
+<!-- """/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Authors:
+//		Dasari, Veera Venkata Sairam: VXD210027
+        Gnanamoorthy, Vijayan: VXG210040
+        Mulkalwar, Ashray: AXM190211
+        Satish, Sirisha: SXS210095
+        Vunnava, Vaishnavi: VXV210027
+
+// Created date : 4/20/2023
+// Description : Google Drive Python file 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+""" -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>CS 6348 PROJECT</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+      <div class="container">
+          <a class="navbar-brand" href="#">DAS Project</a>
+          <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+         </li>
+         </ul>
+          <span class="navbar-text mr-2">
+            User: {{ user_info['given_name'] }}
+          </span>
+          <a href="/google/logout" class="btn btn-primary" role="button" aria-pressed="true">Log Out</a>
+      </div>
+    </nav>
+ 
+    <div class="container bg-info text-center justify-content-center">
+        <h3 class="mt-4">Upload a new file</h3>
+            <form method='POST' enctype='multipart/form-data' action="/drive/upload-file">
+              <div class="input-group mb-3 justify-content-center">
+                <div class="form-group">
+                  <div class="custom-file">
+                    <input type="file" name="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                  </div>
+                </div>
+                <div class="input-group mb-3 mt-3 justify-content-center">
+                        <input autocomplete="false" name="password" id="password" type="password" required placeholder="Enter password" placeholder="Enter password"/>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input class="btn btn-primary" type="submit" value="Upload" />
+                  </div>
+                </div>
+              </div>
+            </form>
+<h3 class="mt-4">           FILES</h3>
+<table class="table table-bordered table-dark">
+<thead>
+  <tr>
+    <th scope="col">FILE NAME</th>
+    <th scope="col">VIEW</th>
+    <th scope="col">UPDATE</th>
+    <th scope="col">SHARE</th>
+    <th scope="col"> REMOVE </th>
+  </tr>
+</thead>
+<tbody>
+  {% for file in files %}
+  <tr>
+    <td>{{ file['name'] }}</td>
+    <td>
+      {#        <button onclick="prompt('Press Ctrl + C, then Enter to copy to clipboard','{{ file['webContentLink'] }}')">Copy URL</button>#}
+              <a   target="_blank" href="/drive/view-file/{{file['id']}}&view">View/Edit file</a>
+          </td>
+    <td>
+{#        <button onclick="prompt('Press Ctrl + C, then Enter to copy to clipboard','{{ file['webContentLink'] }}')">Copy URL</button>#}
+        <a   target="_blank" href="/drive/view-file/{{file['id']}}&update">Update Password</a>
+    </td>
+    <td>
+      {#        <button onclick="prompt('Press Ctrl + C, then Enter to copy to clipboard','{{ file['webContentLink'] }}')">Copy URL</button>#}
+              <a   target="_blank" href="/drive/view-file/{{file['id']}}&share">Share</a>
+          </td>
+    <td>
+        <a  href="/drive/delete/{{file['id']}}">Delete</a>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+    <p><a class="mt-4 text-dark" href="/drive/access-file">Click here to view the file</a></p>
+    <br>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        $('.custom-file-input').on('change', function() { 
+            let fileName = $(this).val().split('\\').pop(); 
+            $(this).next('.custom-file-label').addClass("selected").html(fileName); 
+        });
+
+    </script>
+  </body>
+</html>

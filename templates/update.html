@@ -1,0 +1,171 @@
+<!-- """/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Authors:
+//		Dasari, Veera Venkata Sairam: VXD210027
+        Gnanamoorthy, Vijayan: VXG210040
+        Mulkalwar, Ashray: AXM190211
+        Satish, Sirisha: SXS210095
+        Vunnava, Vaishnavi: VXV210027
+
+// Created date : 4/20/2023
+// Description : Google Drive Python file 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+""" -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>CS 6348 Project</title>
+
+  <script type="application/javascript" src="{{ url_for('static',filename='js/shamirs.js') }}"></script>
+  <script type="application/javascript" src="{{ url_for('static',filename='js/main.js') }}"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
+      <div class="container">
+          <a class="navbar-brand" href="#">DAS Project</a>
+          <ul class="navbar-nav mr-auto">
+         </ul>
+          <span class="navbar-text mr-2">
+            User: {{ user_info['given_name'] }}
+          </span>
+          <a href="/google/logout" class="btn btn-primary" role="button" aria-pressed="true">Log Out</a>
+      </div>
+    </nav>
+    <div class="container justify-content-center">
+        {% if file_name %}
+        <!-- Displaying edit page -->
+
+        <h3 class="mt-4">{{file_name}}</h3>
+        
+{% if method == "view" %}
+<form method='POST' enctype='multipart/form-data' action="/drive/save/{{ file_id }}">
+  <div class="input-group mb-3 bg-info justify-content-center ">
+    <div>
+        <label> View or Edit Files <br/>
+<textarea cols="100" rows="15" id="content" name="content" >{{ file_content|string }}</textarea>
+        </label>
+         {% if file_id %}
+        <div>
+                <label hidden> Update Password <br/>
+                        <input autocomplete="false" name="password" id="password" type="password" placeholder="Enter password" value="{{ password }}"/>
+                </label>
+            </div>
+
+    </div>
+    <div class="input-group justify-content-center">
+
+      <input class="input-group-text" type="submit" value="Update File" />
+            {% endif %}
+    </div>
+  </div>
+</form>
+{% elif method == "update" %}
+<form method='POST' enctype='multipart/form-data' action="/drive/save/{{ file_id }}">
+  <div class="input-group mb-3 bg-info justify-content-center ">
+    <div>
+        <label hidden> View or Edit Files <br/>
+<textarea cols="100" rows="15" id="content" name="content" >{{ file_content|string }}</textarea>
+        </label>
+         {% if file_id %}
+        <div>
+                <label> Update Password <br/>
+                        <input autocomplete="false" name="password" id="password" type="password" placeholder="Enter password" value="{{ password }}"/>
+                </label>
+            </div>
+
+    </div>
+    <div class="input-group justify-content-center">
+
+      <input class="input-group-text" type="submit" value="Update Password" />
+            {% endif %}
+    </div>
+  </div>
+</form>
+
+{% endif %}
+
+        {% elif  share %}
+        <!-- Displaying share page -->
+           <div class="row bg-info justify-content-center">
+                  <div class="col-6">
+                    <br>
+                    <h2>Share Page</h2>
+                    <br>
+                    <form id="share-form" action="#">
+                      <p>
+                        <label for="users">Number of users:</label>
+                        <input name="users" type="number" value="3"></input>
+                      </p>
+                      <p>
+                        <label for="shares"> Secret Shares:</label>
+                        <input name="shares" type="number" value="2"></input>
+                      </p>
+                      <p>
+                        <label for="secret"> Secret Key </label>
+                        <textarea rows="2"  cols="50" name="secret" >{{ key }}</textarea>
+                      </p>
+
+          <button type="submit">Submit</button>
+        </form>
+        <br>
+        <div id="share-results">
+
+        </div>
+        <p>
+          <label for="url">Url</label>
+          <p><a class="mt-4 text-dark" href="{{ share_url }}">{{ share_url }}</a></p>
+        </p>
+      </div>
+
+        <form id="combine-form" action="#"></form>
+        {% else %}
+        <!-- Displaying password page -->
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+          <div style="width: 300px; height: 400px;">
+          <div class="card">
+          <div class="card-header">
+                    <h2 style="text-align: center;">{{file_n}}</h2>
+          </div>
+          <div class="card-body">
+            <form method='POST' enctype='multipart/form-data' action="/drive/view-file/{{file_id}}&{{method}}">
+
+              <div class="input-group mb-3">
+                <div>
+                    <label> Enter Password <br/>
+                            <input autocomplete="false" name="password" id="password" type="password"  required placeholder="Enter password"/>
+                    </label>
+                </div>
+                <div class="input-group">
+                  {% if method == "update" %}
+                  <input class="input-group-text mr-2" type="submit" name="retrieve" value="Proceed" />
+                  {% elif method == "view" %}
+                  <input class="input-group-text mr-2" type="submit" name="retrieve" value="View/Edit" />
+                  {% elif method == "share" %}
+                  <input class="input-group-text" type="submit" name="share" value="Share" />
+                  {% endif %}
+                </div>
+              </div>
+    
+            </form>
+          </div>
+          </div>
+          </div>
+          </div>
+        {% endif %}
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        $('.custom-file-input').on('change', function() {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+    </script>
+  </body>
+</html>
